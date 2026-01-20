@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Domo Proxy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 { color: #333; }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        iframe {
+            width: 100%;
+            height: 800px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+        }
+        .instructions {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Test de Proxy Domo</h1>
+        
+        <div class="instructions">
+            <h3>📋 Instrucciones:</h3>
+            <ol>
+                <li><strong>Esta es una tarjeta pública de Domo</strong> - No requiere autenticación</li>
+                <li><strong>Si no ves contenido:</strong> Verifica tu conexión a internet</li>
+                <li><strong>Si ves errores:</strong> Abre la consola del navegador (F12) y revisa los mensajes</li>
+            </ol>
+        </div>
+
+        <div id="status" class="status info">
+            ⏳ Cargando contenido de Domo...
+        </div>
+
+        <iframe 
+            id="domoFrame"
+            src="https://embed.domo.com/cards/3yVGQ" 
+            width="600"
+            height="600"
+            marginheight="0"
+            marginwidth="0"
+            frameborder="0"
+            allowfullscreen>
+        </iframe>
+
+        <div class="status info" style="margin-top: 20px;">
+            <strong>🔍 Debug:</strong> Abre la consola del navegador (F12) para ver más detalles
+        </div>
+    </div>
+
+    <script>
+        const iframe = document.getElementById('domoFrame');
+        const status = document.getElementById('status');
+        
+        let loadTimeout;
+        
+        iframe.onload = function() {
+            clearTimeout(loadTimeout);
+            status.className = 'status success';
+            status.innerHTML = '✅ Iframe cargado correctamente.';
+            console.log('✅ Iframe cargado');
+        };
+        
+        iframe.onerror = function() {
+            status.className = 'status error';
+            status.innerHTML = '❌ Error al cargar el iframe. Verifica la consola (F12) para más detalles.';
+            console.error('❌ Error al cargar iframe');
+        };
+        
+        // Timeout después de 15 segundos
+        loadTimeout = setTimeout(function() {
+            if (status.className.includes('info')) {
+                status.className = 'status error';
+                status.innerHTML = '⏱️ Timeout: El contenido tardó mucho en cargar. Verifica tu conexión a internet.';
+            }
+        }, 15000);
+        
+        // Log de la URL del iframe
+        console.log('🔗 URL del iframe:', iframe.src);
+        console.log('🌐 URL actual:', window.location.href);
+    </script>
+</body>
+</html>
